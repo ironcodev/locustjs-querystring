@@ -1,0 +1,24 @@
+{
+  "name": "locustjs-querystring",
+  "version": "1.0.0",
+  "description": "This library provides querystring utilities.",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ironcodev/locustjs-querystring.git"
+  },
+  "keywords": [
+    "javascript",
+    "locustjs",
+    "querystring"
+  ],
+  "author": "Iron Code",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ironcodev/locustjs-querystring/issues"
+  },
+  "homepage": "https://github.com/ironcodev/locustjs-querystring#readme",
+  "devDependencies": {},
+  "dependencies": {}
+}
