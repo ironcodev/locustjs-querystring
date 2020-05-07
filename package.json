@@ -1,8 +1,9 @@
 {
   "name": "locustjs-querystring",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "This library provides querystring utilities.",
-  "main": "index.js",
+  "main": "index.cjs.js",
+  "module": "index.esm.js",
   "scripts": {},
   "repository": {
     "type": "git",
