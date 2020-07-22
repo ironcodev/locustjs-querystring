@@ -12,10 +12,10 @@ console.log(result);
 
 /*
   {
-    age: "23"
-    agree: "true"
-    city: "UK"
-    name: "John Doe"
+    age: "23",
+    agree: "true",
+    city: "UK",
+    name: "John Doe",
   }
 */
 ```
