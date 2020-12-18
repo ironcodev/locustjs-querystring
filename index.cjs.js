@@ -5,23 +5,50 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.parseQuery = void 0;
 
+var _locustjsBase = require("locustjs-base");
+
 var parseQuery = function parseQuery(url) {
+  var convert = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+  var smart = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+  url = (url || '').toString().trim();
   var result = {};
   var iq = url.indexOf('?');
   var ih = url.indexOf('#');
-  var arr;
+  var hasHttp = url.substr(0, 7).toLowerCase() == 'http://';
+  var hasHttps = url.substr(0, 8).toLowerCase() == 'https://';
+  var arr = '';
 
   if (iq >= 0) {
     if (ih > 0) {
-      if (ih - iq - 1 > 0) {
-        arr = url.substr(iq + 1, ih - iq - 1);
+      if (iq < ih) {
+        if (ih - iq - 1 > 0) {
+          arr = url.substr(iq + 1, ih - iq - 1);
+        }
+      } else {
+        if (!hasHttp && !hasHttps) {
+          arr = url.substr(0, ih);
+
+          if (arr.indexOf('=') < 0) {
+            arr = '';
+          }
+        }
       }
     } else {
       arr = url.substr(iq + 1);
     }
   } else {
-    if (url.substr(0, 4).toLowerCase() != "http") {
-      arr = url;
+    if (ih >= 0) {
+      if (!hasHttp && !hasHttps) {
+        arr = url.substr(0, ih);
+      }
+    } else {
+      if (!hasHttp && !hasHttps) {
+        arr = url;
+      }
+    }
+
+    if (arr.indexOf('=') < 0) {
+      arr = '';
     }
   }
 
@@ -37,7 +64,38 @@ var parseQuery = function parseQuery(url) {
         } else {
           var key = decodeURIComponent(key_value_pair.substr(0, ei).trim());
           var value = decodeURIComponent(key_value_pair.substr(ei + 1));
-          result[key] = value;
+
+          if (value && convert) {
+            if ((0, _locustjsBase.isNumeric)(value)) {
+              result[key] = new Number(value);
+            } else if ((0, _locustjsBase.hasBool)(value)) {
+              result[key] = value.toLowerCase() == 'true' ? true : false;
+            } else if ((0, _locustjsBase.hasDate)(value)) {
+              result[key] = Date.parse(value);
+            } else {
+              if (value[0] == '{' && value[value.length - 1] == '}' || value[0] == '[' && value[value.length - 1] == ']') {
+                try {
+                  result[key] = JSON.parse(value);
+                } catch (_unused) {
+                  result[key] = value;
+                }
+              } else {
+                if (smart) {
+                  if (value == 'null') {
+                    result[key] = null;
+                  } else if (value == 'undefined') {
+                    result[key] = undefined;
+                  } else {
+                    result[key] = value;
+                  }
+                } else {
+                  result[key] = value;
+                }
+              }
+            }
+          } else {
+            result[key] = value;
+          }
         }
       }
     });

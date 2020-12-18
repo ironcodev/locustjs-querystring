@@ -1,20 +1,47 @@
-const parseQuery = function (url) {
+import { isNumeric, hasBool, hasDate } from 'locustjs-base';
+
+const parseQuery = function (url, convert = false, smart = true) {
+	url = (url || '').toString().trim();
+	
 	const result = {};
 	const iq = url.indexOf('?');
 	const ih = url.indexOf('#');
-	let arr;
+	const hasHttp = url.substr(0,7).toLowerCase() == 'http://';
+	const hasHttps = url.substr(0,8).toLowerCase() == 'https://';
+	
+	let arr = '';
 
 	if (iq >= 0) {
 		if (ih > 0) {
-			if (ih - iq - 1 > 0) {
-				arr = url.substr(iq + 1, ih - iq - 1);
+			if (iq < ih) {
+				if (ih - iq - 1 > 0) {
+					arr = url.substr(iq + 1, ih - iq - 1);
+				}
+			} else {
+				if (!hasHttp && !hasHttps) {
+					arr = url.substr(0, ih);
+					
+					if (arr.indexOf('=') < 0) {
+						arr = ''
+					}
+				}
 			}
 		} else {
 			arr = url.substr(iq + 1);
 		}
 	} else {
-		if (url.substr(0, 4).toLowerCase() != "http") {
-			arr = url;
+		if (ih >= 0) {
+			if (!hasHttp && !hasHttps) {
+				arr = url.substr(0, ih);
+			}
+		} else {
+			if (!hasHttp && !hasHttps) {
+				arr = url;
+			}
+		}
+		
+		if (arr.indexOf('=') < 0) {
+			arr = ''
 		}
 	}
 
@@ -31,7 +58,40 @@ const parseQuery = function (url) {
 					const key = decodeURIComponent(key_value_pair.substr(0, ei).trim());
 					const value = decodeURIComponent(key_value_pair.substr(ei + 1));
 					
-					result[key] = value;
+					if (value && convert) {
+						if (isNumeric(value)) {
+							result[key] = new Number(value);
+						} else if (hasBool(value)) {
+							result[key] = value.toLowerCase() == 'true' ? true : false;
+						} else if (hasDate(value)) {
+							result[key] = Date.parse(value);
+						} else {
+							if (
+								(value[0] == '{' && value[value.length - 1] == '}') ||
+								(value[0] == '[' && value[value.length - 1] == ']')
+								) {
+								try {
+									result[key] = JSON.parse(value);
+								} catch {
+									result[key] = value;
+								}
+							} else {
+								if (smart) {
+									if (value == 'null') {
+										result[key] = null;
+									} else if (value == 'undefined') {
+										result[key] = undefined;
+									} else {
+										result[key] = value;
+									}
+								} else {
+									result[key] = value;
+								}
+							}
+						}
+					} else {
+						result[key] = value;
+					}
 				}
 			}
 		});
