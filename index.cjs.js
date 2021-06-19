@@ -3,9 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.parseQuery = void 0;
+exports.parseQuery = exports.createQuery = exports["default"] = void 0;
 
 var _locustjsBase = require("locustjs-base");
+
+function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-only"); }
 
 var parseQuery = function parseQuery(url) {
   var convert = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
@@ -67,7 +69,17 @@ var parseQuery = function parseQuery(url) {
 
           if (value && convert) {
             if ((0, _locustjsBase.isNumeric)(value)) {
-              result[key] = new Number(value);
+              var convertedValue = Number(value);
+
+              if (isNaN(convertedValue)) {
+                parseFloat(value), _readOnlyError("convertedValue");
+              }
+
+              if (isNaN(convertedValue)) {
+                0, _readOnlyError("convertedValue");
+              }
+
+              result[key] = convertedValue;
             } else if ((0, _locustjsBase.hasBool)(value)) {
               result[key] = value.toLowerCase() == 'true' ? true : false;
             } else if ((0, _locustjsBase.hasDate)(value)) {
@@ -105,3 +117,29 @@ var parseQuery = function parseQuery(url) {
 };
 
 exports.parseQuery = parseQuery;
+
+var createQuery = function createQuery(obj, ignoreKeys) {
+  return Object.keys(obj).filter(function (key) {
+    return ignoreKeys == null || typeof ignoreKeys.indexOf !== 'function' || ignoreKeys.indexOf(key) < 0;
+  }).reduce(function (arr, key) {
+    var item = obj[key];
+
+    if (Array.isArray(item)) {
+      item.forEach(function (value) {
+        return arr.push(encodeURIComponent(key) + "=" + encodeURIComponent(value));
+      });
+    } else if (item !== undefined) {
+      arr.push(encodeURIComponent(key) + "=" + encodeURIComponent(item));
+    }
+
+    return arr;
+  }, []).join("&");
+};
+
+exports.createQuery = createQuery;
+var QueryHelper = {
+  parse: parseQuery,
+  stringify: createQuery
+};
+var _default = QueryHelper;
+exports["default"] = _default;

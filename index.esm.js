@@ -60,7 +60,17 @@ const parseQuery = function (url, convert = false, smart = true) {
 					
 					if (value && convert) {
 						if (isNumeric(value)) {
-							result[key] = new Number(value);
+							const convertedValue = Number(value);
+
+							if (isNaN(convertedValue)) {
+								convertedValue = parseFloat(value)
+							}
+
+							if (isNaN(convertedValue)) {
+								convertedValue = 0
+							}
+
+							result[key] = convertedValue
 						} else if (hasBool(value)) {
 							result[key] = value.toLowerCase() == 'true' ? true : false;
 						} else if (hasDate(value)) {
@@ -100,6 +110,28 @@ const parseQuery = function (url, convert = false, smart = true) {
 	return result;
 }
 
+const createQuery = (obj, ignoreKeys) => Object.keys(obj)
+		.filter(key => ignoreKeys == null || typeof ignoreKeys.indexOf !== 'function' || ignoreKeys.indexOf(key) < 0)
+        .reduce((arr, key) => {
+			const item = obj[key];
+
+            if (Array.isArray(item)) {
+                item.forEach(value => arr.push(encodeURIComponent(key) + "=" + encodeURIComponent(value)))
+            } else if (item !== undefined) {
+                arr.push(encodeURIComponent(key) + "=" + encodeURIComponent(item));
+            }
+
+            return arr;
+        }, [])
+        .join("&");
+
+const QueryHelper = {
+	parse: parseQuery,
+	stringify: createQuery
+}
+
+export default QueryHelper;
 export {
+	createQuery,
 	parseQuery
 }
