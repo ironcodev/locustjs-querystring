@@ -60,7 +60,7 @@ const parseQuery = function (url, convert = false, smart = true) {
 					
 					if (value && convert) {
 						if (isNumeric(value)) {
-							const convertedValue = Number(value);
+							let convertedValue = Number(value);
 
 							if (isNaN(convertedValue)) {
 								convertedValue = parseFloat(value)

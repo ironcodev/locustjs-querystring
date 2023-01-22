@@ -7,8 +7,6 @@ exports.parseQuery = exports.createQuery = exports["default"] = void 0;
 
 var _locustjsBase = require("locustjs-base");
 
-function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-only"); }
-
 var parseQuery = function parseQuery(url) {
   var convert = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
   var smart = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
@@ -72,11 +70,11 @@ var parseQuery = function parseQuery(url) {
               var convertedValue = Number(value);
 
               if (isNaN(convertedValue)) {
-                parseFloat(value), _readOnlyError("convertedValue");
+                convertedValue = parseFloat(value);
               }
 
               if (isNaN(convertedValue)) {
-                0, _readOnlyError("convertedValue");
+                convertedValue = 0;
               }
 
               result[key] = convertedValue;
