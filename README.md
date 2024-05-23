@@ -1,6 +1,12 @@
 # locustjs-querystring
 This library provides querystring utilities.
 
+# Installation
+
+```
+npm i @locustjs/querystring
+```
+
 ## functions
 `parseQuery`: Parses strings in querystring format and returns a json object.
 
