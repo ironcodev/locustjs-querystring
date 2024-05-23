@@ -5,9 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
-  locustjs-base:
-    specifier: ^1.0.12
-    version: 1.0.12
+  '@locustjs/base':
+    specifier: ^2.1.0
+    version: 2.1.0
 
 devDependencies:
   '@babel/cli':
@@ -1435,6 +1435,10 @@ packages:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.4.15
     dev: true
+
+  /@locustjs/base@2.1.0:
+    resolution: {integrity: sha512-o650/LAmcdjpJzGh36JDVJ4FXvFk4EFp4/g56RNlpfmLvgbeP8Zb/OPUucql+DkBhksbtkDLUNIFVnQMi+G4Iw==}
+    dev: false
 
   /@nicolo-ribaudo/chokidar-2@2.1.8-no-fsevents.2:
     resolution: {integrity: sha512-Fb8WxUFOBQVl+CX4MWet5o7eCc6Pj04rXIwVKZ6h1NnqTo45eOQW6aWyhG25NIODvWFwTDMwBsYxrQ3imxpetg==}
@@ -3486,10 +3490,6 @@ packages:
     dependencies:
       p-locate: 4.1.0
     dev: true
-
-  /locustjs-base@1.0.12:
-    resolution: {integrity: sha512-6uVuErbsSPTynQ9Qo3a1Eo9LieVZaxp4obLvzozNkHA+A6z+uShkWBdrto7Er8UpPC3Qxlw4fCfqQiP8vs697w==}
-    dev: false
 
   /lodash.debounce@4.0.8:
     resolution: {integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==}

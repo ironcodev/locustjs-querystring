@@ -1,6 +1,6 @@
 {
   "name": "@locustjs/querystring",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "This library provides querystring utilities.",
   "main": "index.cjs.js",
   "module": "index.esm.js",
@@ -34,6 +34,6 @@
     "jest": "^27.0.4"
   },
   "dependencies": {
-    "locustjs-base": "^1.0.12"
+    "@locustjs/base": "^2.1.0"
   }
 }

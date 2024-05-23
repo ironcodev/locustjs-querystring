@@ -1,4 +1,4 @@
-import { isNumeric, hasBool, hasDate } from 'locustjs-base';
+import { isNumeric, hasBool, hasDate } from '@locustjs/base';
 
 const parseQuery = function (url, convert = false, smart = true) {
 	url = (url || '').toString().trim();
