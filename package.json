@@ -1,6 +1,6 @@
 {
-  "name": "locustjs-querystring",
-  "version": "1.1.1",
+  "name": "@locustjs/querystring",
+  "version": "2.0.0",
   "description": "This library provides querystring utilities.",
   "main": "index.cjs.js",
   "module": "index.esm.js",
